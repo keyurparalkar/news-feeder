@@ -5,7 +5,6 @@ import {
   CommentOutlined,
 } from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
-import { ReactElement } from "react";
 
 const { Text } = Typography;
 
@@ -31,7 +30,7 @@ const RightSider = () => {
   //   const { datasources, selectedTable } = useContext(DataContext);
 
   return (
-    <Sider style={rightSliderStyle} width="650px">
+    <Sider style={rightSliderStyle} width="800px">
       <Card style={{ borderRadius: "0" }} title="Datasource Overview">
         Right Sider
       </Card>

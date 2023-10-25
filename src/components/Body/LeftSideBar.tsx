@@ -2,8 +2,9 @@ import { Menu } from "antd";
 import type { MenuProps } from "antd";
 
 import Sider from "antd/es/layout/Sider";
-// import { DataDispatchContext } from "../../store/providers";
-// import { SELECT_TABLE } from "../../store/actions";
+import { useContext } from "react";
+import { FeedDispatchContext } from "../../context";
+import { SELECT_SOURCE } from "../../context/actions";
 
 const leftSiderStyle: React.CSSProperties = {
   backgroundColor: "white",
@@ -38,11 +39,11 @@ const items: MenuItem[] = [
 ];
 
 export const LeftSider = () => {
-  //   const dispatch = useContext(DataDispatchContext);
+  const dispatch = useContext(FeedDispatchContext);
 
-  //   const handleClick: MenuProps["onClick"] = ({ key }) => {
-  //     dispatch({ type: SELECT_TABLE, payload: key });
-  //   };
+  const handleClick: MenuProps["onClick"] = ({ key }) => {
+    dispatch({ type: SELECT_SOURCE, payload: key });
+  };
 
   return (
     <Sider style={leftSiderStyle}>
@@ -50,7 +51,7 @@ export const LeftSider = () => {
         defaultSelectedKeys={["theguardian"]}
         mode="inline"
         items={items}
-        //   onClick={handleClick}
+        onClick={handleClick}
         style={menuStyles}
       />
     </Sider>

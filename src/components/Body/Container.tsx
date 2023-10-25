@@ -1,17 +1,5 @@
-import { useContext } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  ConfigProvider,
-  Divider,
-  Empty,
-  Flex,
-  Layout,
-  Row,
-  Tabs,
-  TabsProps,
-} from "antd";
+import { Avatar, Card, ConfigProvider, Empty, Layout, List } from "antd";
+import { Feed } from "../../types/feeds";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -21,7 +9,25 @@ const contentStyle: React.CSSProperties = {
   padding: 10,
 };
 
-const Container = () => {
+const ListItemRenderer = (item: any, index: number) => (
+  <List.Item>
+    <List.Item.Meta
+      avatar={
+        <Avatar
+          src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
+        />
+      }
+      title={<a href={item.webUrl}>{item.webTitle}</a>}
+      description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+    />
+  </List.Item>
+);
+
+type ContainerProps = {
+  feeds: Feed[];
+};
+
+const Container = ({ feeds }: ContainerProps) => {
   return (
     <ConfigProvider
       theme={{
@@ -35,21 +41,12 @@ const Container = () => {
       renderEmpty={() => <Empty />}
     >
       <Layout.Content style={contentStyle}>
-        <Card title="Query">
-          <Row>
-            <Col span={16}></Col>
-            <Col span={1} />
-            <Col span={7}>
-              <Flex vertical justify={"space-between"} gap="middle">
-                <Button type="primary" style={{ backgroundColor: "#0000FF" }}>
-                  Run Query
-                </Button>
-              </Flex>
-            </Col>
-          </Row>
-          <Divider />
-          <Row></Row>
-          <Divider />
+        <Card title="Feeds">
+          <List
+            itemLayout="horizontal"
+            dataSource={feeds}
+            renderItem={ListItemRenderer}
+          />
         </Card>
       </Layout.Content>
     </ConfigProvider>

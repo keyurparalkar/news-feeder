@@ -3,13 +3,13 @@ import { Feeds, Source } from "../types/feeds";
 import feedReducer from "./reducer";
 
 export type GlobalState = {
-  feedSources: Feeds | [];
-  selectedSource: Source | undefined;
+  feedSources: Feeds;
+  selectedSource: Source;
 };
 
 export const initialState: GlobalState = {
-  feedSources: [],
-  selectedSource: undefined,
+  feedSources: [] as any,
+  selectedSource: "theguardian",
 };
 
 export type ActionProps = {
