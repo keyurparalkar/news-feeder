@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Layout, Space, Typography } from "antd";
+import Body from "./components/Body";
+const { Header } = Layout;
+
+const headerStyle: React.CSSProperties = {
+  color: "#fff",
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Space direction="vertical" style={{ width: "100%" }} size={[0, 48]}>
+      <Layout>
+        <Header style={headerStyle}>
+          <Typography.Title level={3} style={{ color: "white", marginTop: 18 }}>
+            News Feeder
+          </Typography.Title>
+        </Header>
+        <Body />
+      </Layout>
+    </Space>
   );
 }
 
