@@ -1,6 +1,7 @@
 import { Layout } from "antd";
 import { useContext, useEffect } from "react";
 import { fetchFeed } from "../../apis";
+import { aggregateApiResponse } from "../../apis/utils";
 import { FeedContext, FeedDispatchContext } from "../../context";
 import { FETCH_FEED } from "../../context/actions";
 import Container from "./Container";
@@ -12,7 +13,11 @@ const Body = () => {
 
   const handleFeedResponse = async (source: string) => {
     const resp = await fetchFeed(source);
-    dispatch({ type: FETCH_FEED, payload: resp.response?.results });
+    const transformedResp = aggregateApiResponse(
+      resp?.response.results,
+      source
+    );
+    dispatch({ type: FETCH_FEED, payload: transformedResp });
   };
 
   useEffect(() => {

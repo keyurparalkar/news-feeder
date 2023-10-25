@@ -2,7 +2,7 @@ import { Dayjs } from "dayjs";
 
 export type Feed = {
   title: string;
-  content: string;
+  url: string;
   author: string;
   createdAt: Dayjs;
   category: string;

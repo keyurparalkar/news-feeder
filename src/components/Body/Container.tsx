@@ -9,7 +9,7 @@ const contentStyle: React.CSSProperties = {
   padding: 10,
 };
 
-const ListItemRenderer = (item: any, index: number) => (
+const ListItemRenderer = (item: Feed, index: number) => (
   <List.Item>
     <List.Item.Meta
       avatar={
@@ -17,7 +17,7 @@ const ListItemRenderer = (item: any, index: number) => (
           src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
         />
       }
-      title={<a href={item.webUrl}>{item.webTitle}</a>}
+      title={<a href={item.url}>{item.title}</a>}
       description="Ant Design, a design language for background applications, is refined by Ant UED Team"
     />
   </List.Item>
