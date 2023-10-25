@@ -11,3 +11,9 @@ export type Feed = {
 export type Source = string;
 
 export type Feeds = Record<Source, Feed[]>;
+
+export enum FeedsKey {
+  GUARDIAN = "theguardian",
+  NYT = "newyorktimes",
+  BBC = "bbc-news",
+}

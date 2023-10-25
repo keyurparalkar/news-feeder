@@ -1,5 +1,5 @@
 import { createContext, Dispatch, useReducer } from "react";
-import { Feeds, Source } from "../types/feeds";
+import { Feeds, FeedsKey, Source } from "../types/feeds";
 import feedReducer from "./reducer";
 
 export type GlobalState = {
@@ -9,7 +9,7 @@ export type GlobalState = {
 
 export const initialState: GlobalState = {
   feedSources: [] as any,
-  selectedSource: "theguardian",
+  selectedSource: FeedsKey.GUARDIAN,
 };
 
 export type ActionProps = {

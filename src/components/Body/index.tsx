@@ -14,7 +14,7 @@ const Body = () => {
   const handleFeedResponse = async (source: string) => {
     const resp = await fetchFeed(source);
     const transformedResp = aggregateApiResponse(
-      resp?.response.results,
+      resp?.response ?? resp,
       source
     );
     dispatch({ type: FETCH_FEED, payload: transformedResp });
