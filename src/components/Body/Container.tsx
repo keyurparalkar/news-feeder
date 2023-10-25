@@ -25,9 +25,10 @@ const ListItemRenderer = (item: Feed, index: number) => (
 
 type ContainerProps = {
   feeds: Feed[];
+  isLoading: boolean;
 };
 
-const Container = ({ feeds }: ContainerProps) => {
+const Container = ({ feeds, isLoading }: ContainerProps) => {
   return (
     <ConfigProvider
       theme={{
@@ -46,6 +47,7 @@ const Container = ({ feeds }: ContainerProps) => {
             itemLayout="horizontal"
             dataSource={feeds}
             renderItem={ListItemRenderer}
+            loading={isLoading}
           />
         </Card>
       </Layout.Content>
