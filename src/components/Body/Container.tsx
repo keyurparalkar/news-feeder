@@ -19,7 +19,13 @@ import { ChangeEvent, Dispatch } from "react";
 
 import { ActionProps } from "../../context";
 import { FILTER_DATA } from "../../context/actions";
-import { Feed, GlobalKeys, selectOptions, Source } from "../../types/feeds";
+import {
+  Feed,
+  FeedsByCategoryKeys,
+  GlobalKeys,
+  selectOptions,
+  Source,
+} from "../../types/feeds";
 
 dayjs.extend(relativeTime);
 const { RangePicker } = DatePicker;
@@ -58,7 +64,10 @@ const ListItemRenderer = ({
         description={
           <Space>
             <Tag>{item.category}</Tag>
-            {selectedSource === GlobalKeys.ALL && <Tag>{item.source}</Tag>}
+            {selectedSource === GlobalKeys.ALL ||
+              ((Object.values(FeedsByCategoryKeys) as string[]).includes(
+                selectedSource
+              ) && <Tag>{item.source}</Tag>)}
             <Text>{createdAt}</Text>
           </Space>
         }
@@ -118,13 +127,16 @@ const Container = ({
                 format={dateFormat}
                 onCalendarChange={handleDateSelection}
               />
-              {selectedSource === GlobalKeys.ALL && (
-                <Select
-                  placeholder="Filter by News Source"
-                  onSelect={handleSelectChange}
-                  options={selectOptions}
-                />
-              )}
+              {selectedSource === GlobalKeys.ALL ||
+                ((Object.values(FeedsByCategoryKeys) as string[]).includes(
+                  selectedSource
+                ) && (
+                  <Select
+                    placeholder="Filter by News Source"
+                    onSelect={handleSelectChange}
+                    options={selectOptions}
+                  />
+                ))}
             </>
           }
         >

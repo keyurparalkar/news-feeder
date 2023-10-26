@@ -22,7 +22,7 @@ export const aggregateApiResponse = (response: any, source: Source): Feed[] => {
       return response?.docs.map((item: any) => ({
         createdAt: item.pub_date,
         author: "",
-        category: item.section_name,
+        category: item.news_desk,
         title: item.headline?.main,
         url: item.web_url,
         source,

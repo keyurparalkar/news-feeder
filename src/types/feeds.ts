@@ -23,6 +23,18 @@ export enum GlobalKeys {
   ALL = "all",
 }
 
+export enum FeedsByCategoryKeys {
+  BUSINESS = "business",
+  SPORTS = "sport",
+  SCIENCE = "science",
+}
+
+export enum FeedsByAuthor {
+  "Tim de Lisle" = "profile/timdelisle", // guardian
+  SPORTS = "sport", // newsAPI
+  SCIENCE = "science",
+}
+
 export const selectOptions = Object.entries({ ...GlobalKeys, ...FeedsKey }).map(
   ([key, value]) => ({
     value,

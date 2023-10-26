@@ -3,22 +3,45 @@ import { FeedsKey, GlobalKeys, Source } from "../types/feeds";
 export const getFetchFeedHandler = (source: Source) => {
   switch (source) {
     case FeedsKey.BBC: {
-      const BASE_URL = "https://newsapi.org/v2/top-headlines?sources=bbc-news";
+      const BASE_URL = "https://newsapi.org/v2/top-headlines";
       const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
-      return (props?: any) => fetch(`${BASE_URL}&apiKey=${API_KEY}`);
+      const fetchApi = (props?: any) =>
+        fetch(
+          `${BASE_URL}?apiKey=${API_KEY}${
+            props?.category
+              ? "&category=" + props.category
+              : "&sources=bbc-news"
+          }`
+        );
+      return fetchApi;
     }
 
     case FeedsKey.NYT: {
       const BASE_URL =
-        "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election";
+        "https://api.nytimes.com/svc/search/v2/articlesearch.json";
       const API_KEY = process.env.REACT_APP_NYT_API_KEY;
-      return (props?: any) => fetch(`${BASE_URL}&api-key=${API_KEY}`);
+      const fetchApi = (props?: any) =>
+        fetch(
+          `${BASE_URL}?${
+            props?.category
+              ? `fq=news_desk:("${props.category}")`
+              : "q=election"
+          }&api-key=${API_KEY}`
+        );
+      return fetchApi;
     }
 
     default: {
-      const BASE_URL = "https://content.guardianapis.com/search?";
+      const BASE_URL = "https://content.guardianapis.com/";
       const API_KEY = process.env.REACT_APP_GUARDIAN_API_KEY;
-      return (props?: any) => fetch(`${BASE_URL}api-key=${API_KEY}`);
+      const fetchApi = (props?: any) => {
+        return fetch(
+          `${BASE_URL}${
+            props?.category ? props.category : "search"
+          }?api-key=${API_KEY}`
+        );
+      };
+      return fetchApi;
     }
   }
 };
@@ -36,4 +59,15 @@ export const fetchFeed = async (source: Source) => {
     const data = await resp.json();
     return data;
   }
+};
+
+export const fetchFeedByCategory = async (category: string) => {
+  const allFetchHandlers = Object.values(FeedsKey).map((feed) => {
+    const fetchHandler = getFetchFeedHandler(feed);
+    console.log({ feed, fetchHandler, category });
+    return fetchHandler({ category });
+    // getFetchFeedHandler(feed)(category)
+  });
+  const resps = await Promise.allSettled(allFetchHandlers);
+  return resps;
 };

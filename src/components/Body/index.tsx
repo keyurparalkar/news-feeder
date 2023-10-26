@@ -1,10 +1,16 @@
 import { Layout } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { fetchFeed } from "../../apis";
+import { fetchFeed, fetchFeedByCategory } from "../../apis";
 import { aggregateApiResponse } from "../../apis/utils";
 import { FeedContext, FeedDispatchContext } from "../../context";
 import { FETCH_FEED } from "../../context/actions";
-import { Feed, FeedsKey, GlobalKeys, Source } from "../../types/feeds";
+import {
+  Feed,
+  FeedsByCategoryKeys,
+  FeedsKey,
+  GlobalKeys,
+  Source,
+} from "../../types/feeds";
 import Container from "./Container";
 import LeftSideBar from "./LeftSideBar";
 
@@ -13,10 +19,13 @@ const Body = () => {
   const dispatch = useContext(FeedDispatchContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAllFeedResponse = async () => {
+  const handleAllFeedResponse = async (
+    param: string,
+    fetchCallback: (source: string) => Promise<any>
+  ) => {
     try {
       setIsLoading(true);
-      const responses = await fetchFeed(GlobalKeys.ALL);
+      const responses = await fetchCallback(param);
 
       let aggregatedData: Feed[] = [];
 
@@ -59,10 +68,32 @@ const Body = () => {
     }
   };
 
+  // const handleFeedsByCategory = (source: Source) => {
+  //   try {
+  //     setIsLoading(true);
+  //     const resp = await fetchFeed(source, GlobalKeys.ALL);
+  //     const transformedResp = aggregateApiResponse(
+  //       resp?.response ?? resp,
+  //       source
+  //     );
+  //     dispatch({ type: FETCH_FEED, payload: transformedResp });
+  //     setIsLoading(false);
+  //   } catch (err) {
+  //     console.error(err);
+  //     setIsLoading(false);
+  //   }
+  // };
+
   useEffect(() => {
     try {
-      if (selectedSource === GlobalKeys.ALL) {
-        handleAllFeedResponse();
+      if (
+        (Object.values(FeedsByCategoryKeys) as string[]).includes(
+          selectedSource
+        )
+      ) {
+        handleAllFeedResponse(selectedSource, fetchFeedByCategory);
+      } else if (selectedSource === GlobalKeys.ALL) {
+        handleAllFeedResponse(GlobalKeys.ALL, fetchFeed);
       } else {
         handleFeedResponse(selectedSource);
       }
