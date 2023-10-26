@@ -1,11 +1,12 @@
 import { Layout } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { fetchFeed, fetchFeedByCategory } from "../../apis";
+import { fetchFeed, fetchFeedByAuthor, fetchFeedByCategory } from "../../apis";
 import { aggregateApiResponse } from "../../apis/utils";
 import { FeedContext, FeedDispatchContext } from "../../context";
 import { FETCH_FEED } from "../../context/actions";
 import {
   Feed,
+  FeedsByAuthor,
   FeedsByCategoryKeys,
   FeedsKey,
   GlobalKeys,
@@ -86,7 +87,9 @@ const Body = () => {
 
   useEffect(() => {
     try {
-      if (
+      if ((Object.values(FeedsByAuthor) as string[]).includes(selectedSource)) {
+        handleAllFeedResponse(selectedSource, fetchFeedByAuthor);
+      } else if (
         (Object.values(FeedsByCategoryKeys) as string[]).includes(
           selectedSource
         )

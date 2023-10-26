@@ -31,8 +31,8 @@ export enum FeedsByCategoryKeys {
 
 export enum FeedsByAuthor {
   "Tim de Lisle" = "profile/timdelisle", // guardian
-  SPORTS = "sport", // newsAPI
-  SCIENCE = "science",
+  "ET Markets" = "etmarkets", // newsAPI
+  "Lisa" = "Lisa", //nyt
 }
 
 export const selectOptions = Object.entries({ ...GlobalKeys, ...FeedsKey }).map(

@@ -3,11 +3,13 @@ import { FeedsKey, GlobalKeys, Source } from "../types/feeds";
 export const getFetchFeedHandler = (source: Source) => {
   switch (source) {
     case FeedsKey.BBC: {
-      const BASE_URL = "https://newsapi.org/v2/top-headlines";
+      const BASE_URL = "https://newsapi.org/v2/";
       const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
       const fetchApi = (props?: any) =>
         fetch(
-          `${BASE_URL}?apiKey=${API_KEY}${
+          `${BASE_URL}${
+            props?.author ? `everything?q=${props.author}&` : "top-headlines?"
+          }apiKey=${API_KEY}${
             props?.category
               ? "&category=" + props.category
               : "&sources=bbc-news"
@@ -26,7 +28,9 @@ export const getFetchFeedHandler = (source: Source) => {
             props?.category
               ? `fq=news_desk:("${props.category}")`
               : "q=election"
-          }&api-key=${API_KEY}`
+          }&api-key=${API_KEY}${
+            props?.author ? `&fq=persons.contains:(${props.author})` : ""
+          }`
         );
       return fetchApi;
     }
@@ -37,7 +41,11 @@ export const getFetchFeedHandler = (source: Source) => {
       const fetchApi = (props?: any) => {
         return fetch(
           `${BASE_URL}${
-            props?.category ? props.category : "search"
+            props?.category
+              ? props.category
+              : props?.author
+              ? props.author
+              : "search"
           }?api-key=${API_KEY}`
         );
       };
@@ -64,9 +72,16 @@ export const fetchFeed = async (source: Source) => {
 export const fetchFeedByCategory = async (category: string) => {
   const allFetchHandlers = Object.values(FeedsKey).map((feed) => {
     const fetchHandler = getFetchFeedHandler(feed);
-    console.log({ feed, fetchHandler, category });
     return fetchHandler({ category });
-    // getFetchFeedHandler(feed)(category)
+  });
+  const resps = await Promise.allSettled(allFetchHandlers);
+  return resps;
+};
+
+export const fetchFeedByAuthor = async (author: string) => {
+  const allFetchHandlers = Object.values(FeedsKey).map((feed) => {
+    const fetchHandler = getFetchFeedHandler(feed);
+    return fetchHandler({ author });
   });
   const resps = await Promise.allSettled(allFetchHandlers);
   return resps;

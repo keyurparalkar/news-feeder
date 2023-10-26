@@ -5,7 +5,12 @@ import Sider from "antd/es/layout/Sider";
 import { useContext } from "react";
 import { FeedDispatchContext } from "../../context";
 import { SELECT_SOURCE } from "../../context/actions";
-import { FeedsByCategoryKeys, FeedsKey, GlobalKeys } from "../../types/feeds";
+import {
+  FeedsByAuthor,
+  FeedsByCategoryKeys,
+  FeedsKey,
+  GlobalKeys,
+} from "../../types/feeds";
 
 const leftSiderStyle: React.CSSProperties = {
   backgroundColor: "white",
@@ -50,7 +55,7 @@ const items: MenuItem[] = [
   ),
   getItem(
     "By Categories",
-    "sourceGroup",
+    "categoryGroup",
     null,
     [
       getItem("Business", FeedsByCategoryKeys.BUSINESS),
@@ -59,17 +64,17 @@ const items: MenuItem[] = [
     ],
     "group"
   ),
-  // getItem(
-  //   "By Authors",
-  //   "sourceGroup",
-  //   null,
-  //   [
-  //     getItem("The Guardian", FeedsKey.GUARDIAN),
-  //     getItem("New York Times", FeedsKey.NYT),
-  //     getItem("BBC News", FeedsKey.BBC),
-  //   ],
-  //   "group"
-  // ),
+  getItem(
+    "By Authors",
+    "authorGroup",
+    null,
+    [
+      getItem("Tim de Lisle", FeedsByAuthor["Tim de Lisle"]),
+      getItem("ET Markets", FeedsByAuthor["ET Markets"]),
+      getItem("Lisa", FeedsByAuthor.Lisa),
+    ],
+    "group"
+  ),
 ];
 
 export const LeftSider = () => {

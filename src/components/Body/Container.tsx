@@ -64,10 +64,10 @@ const ListItemRenderer = ({
         description={
           <Space>
             <Tag>{item.category}</Tag>
-            {selectedSource === GlobalKeys.ALL ||
-              ((Object.values(FeedsByCategoryKeys) as string[]).includes(
+            {(selectedSource === GlobalKeys.ALL ||
+              (Object.values(FeedsByCategoryKeys) as string[]).includes(
                 selectedSource
-              ) && <Tag>{item.source}</Tag>)}
+            )) && <Tag>{item.source}</Tag>}
             <Text>{createdAt}</Text>
           </Space>
         }
@@ -127,16 +127,16 @@ const Container = ({
                 format={dateFormat}
                 onCalendarChange={handleDateSelection}
               />
-              {selectedSource === GlobalKeys.ALL ||
-                ((Object.values(FeedsByCategoryKeys) as string[]).includes(
+              {(selectedSource === GlobalKeys.ALL ||
+                (Object.values(FeedsByCategoryKeys) as string[]).includes(
                   selectedSource
-                ) && (
+                )) && (
                   <Select
                     placeholder="Filter by News Source"
                     onSelect={handleSelectChange}
                     options={selectOptions}
                   />
-                ))}
+                )}
             </>
           }
         >
