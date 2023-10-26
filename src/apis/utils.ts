@@ -14,6 +14,7 @@ export const aggregateApiResponse = (response: any, source: Source): Feed[] => {
         category: "",
         title: item.title,
         url: item.url,
+        source,
       }));
     }
 
@@ -24,6 +25,7 @@ export const aggregateApiResponse = (response: any, source: Source): Feed[] => {
         category: item.section_name,
         title: item.headline?.main,
         url: item.web_url,
+        source,
       }));
     }
 
@@ -34,6 +36,7 @@ export const aggregateApiResponse = (response: any, source: Source): Feed[] => {
         category: item.sectionName,
         title: item.webTitle,
         url: item.webUrl,
+        source,
       }));
     }
   }

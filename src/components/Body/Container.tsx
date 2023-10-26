@@ -2,6 +2,7 @@ import {
   Avatar,
   Card,
   ConfigProvider,
+  DatePicker,
   Empty,
   Layout,
   List,
@@ -17,9 +18,12 @@ import { ChangeEvent, Dispatch } from "react";
 
 import { ActionProps } from "../../context";
 import { FILTER_DATA } from "../../context/actions";
-import { Feed } from "../../types/feeds";
+import { Feed, GlobalKeys, Source } from "../../types/feeds";
 
 dayjs.extend(relativeTime);
+const { RangePicker } = DatePicker;
+const { Text } = Typography;
+const dateFormat = "YYYY/MM/DD";
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -29,7 +33,17 @@ const contentStyle: React.CSSProperties = {
   padding: 10,
 };
 
-const ListItemRenderer = (item: Feed, index: number) => {
+type ItemRendererProps = {
+  item: Feed;
+  index: number;
+  selectedSource: Source;
+};
+
+const ListItemRenderer = ({
+  item,
+  index,
+  selectedSource,
+}: ItemRendererProps) => {
   const createdAt = dayjs(item.createdAt).fromNow();
   return (
     <List.Item>
@@ -43,7 +57,8 @@ const ListItemRenderer = (item: Feed, index: number) => {
         description={
           <Space>
             <Tag>{item.category}</Tag>
-            <Typography.Text>{createdAt}</Typography.Text>
+            {selectedSource === GlobalKeys.ALL && <Tag>{item.source}</Tag>}
+            <Text>{createdAt}</Text>
           </Space>
         }
       />
@@ -55,9 +70,15 @@ type ContainerProps = {
   feeds: Feed[];
   isLoading: boolean;
   dispatch: Dispatch<ActionProps>;
+  selectedSource: Source;
 };
 
-const Container = ({ feeds, isLoading, dispatch }: ContainerProps) => {
+const Container = ({
+  feeds,
+  isLoading,
+  dispatch,
+  selectedSource,
+}: ContainerProps) => {
   const handleSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: FILTER_DATA, payload: e.target.value });
   }, 700);
@@ -78,17 +99,32 @@ const Container = ({ feeds, isLoading, dispatch }: ContainerProps) => {
         <Card
           title="Feeds"
           extra={
-            <Search
-              placeholder="input search text"
-              style={{ width: 200 }}
-              onChange={handleSearch}
-            />
+            <>
+              <Search
+                placeholder="input search text"
+                style={{ width: 200 }}
+                onChange={handleSearch}
+              />
+              <RangePicker
+                defaultValue={[
+                  dayjs("2015/01/01", dateFormat),
+                  dayjs("2015/01/01", dateFormat),
+                ]}
+                format={dateFormat}
+              />
+            </>
           }
         >
           <List
             itemLayout="horizontal"
             dataSource={feeds}
-            renderItem={ListItemRenderer}
+            renderItem={(item, index) => (
+              <ListItemRenderer
+                item={item}
+                index={index}
+                selectedSource={selectedSource}
+              />
+            )}
             loading={isLoading}
           />
         </Card>

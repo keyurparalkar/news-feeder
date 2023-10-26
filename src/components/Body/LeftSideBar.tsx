@@ -1,11 +1,11 @@
-import { Menu } from "antd";
 import type { MenuProps } from "antd";
+import { Menu } from "antd";
 
 import Sider from "antd/es/layout/Sider";
 import { useContext } from "react";
 import { FeedDispatchContext } from "../../context";
 import { SELECT_SOURCE } from "../../context/actions";
-import { FeedsKey } from "../../types/feeds";
+import { FeedsKey, GlobalKeys } from "../../types/feeds";
 
 const leftSiderStyle: React.CSSProperties = {
   backgroundColor: "white",
@@ -37,6 +37,7 @@ const items: MenuItem[] = [
   getItem("The Guardian", FeedsKey.GUARDIAN),
   getItem("New York Times", FeedsKey.NYT),
   getItem("BBC News", FeedsKey.BBC),
+  getItem("All Sources", GlobalKeys.ALL),
 ];
 
 export const LeftSider = () => {

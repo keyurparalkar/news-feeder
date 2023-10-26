@@ -1,4 +1,4 @@
-import { FeedsKey, Source } from "../types/feeds";
+import { FeedsKey, GlobalKeys, Source } from "../types/feeds";
 
 export const getFetchFeedHandler = (source: Source) => {
   switch (source) {
@@ -24,8 +24,16 @@ export const getFetchFeedHandler = (source: Source) => {
 };
 
 export const fetchFeed = async (source: Source) => {
-  const fetchHandler = getFetchFeedHandler(source);
-  const resp = await fetchHandler();
-  const data = await resp.json();
-  return data;
+  if (source === GlobalKeys.ALL) {
+    const allFetchHandlers = Object.values(FeedsKey).map((feed) =>
+      getFetchFeedHandler(feed)()
+    );
+    const resps = await Promise.allSettled(allFetchHandlers);
+    return resps;
+  } else {
+    const fetchHandler = getFetchFeedHandler(source);
+    const resp = await fetchHandler();
+    const data = await resp.json();
+    return data;
+  }
 };

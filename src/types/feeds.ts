@@ -6,6 +6,7 @@ export type Feed = {
   author: string;
   createdAt: Dayjs;
   category: string;
+  source: Source;
 };
 
 export type Source = string;
@@ -16,4 +17,8 @@ export enum FeedsKey {
   GUARDIAN = "theguardian",
   NYT = "newyorktimes",
   BBC = "bbc-news",
+}
+
+export enum GlobalKeys {
+  ALL = "all",
 }
