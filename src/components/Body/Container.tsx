@@ -1,5 +1,20 @@
-import { Avatar, Card, ConfigProvider, Empty, Layout, List } from "antd";
+import {
+  Avatar,
+  Card,
+  ConfigProvider,
+  Empty,
+  Layout,
+  List,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
+import Search from "antd/es/input/Search";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Feed } from "../../types/feeds";
+
+dayjs.extend(relativeTime);
 
 const contentStyle: React.CSSProperties = {
   minHeight: 120,
@@ -9,19 +24,27 @@ const contentStyle: React.CSSProperties = {
   padding: 10,
 };
 
-const ListItemRenderer = (item: Feed, index: number) => (
-  <List.Item>
-    <List.Item.Meta
-      avatar={
-        <Avatar
-          src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
-        />
-      }
-      title={<a href={item.url}>{item.title}</a>}
-      description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-    />
-  </List.Item>
-);
+const ListItemRenderer = (item: Feed, index: number) => {
+  const createdAt = dayjs(item.createdAt).fromNow();
+  return (
+    <List.Item>
+      <List.Item.Meta
+        avatar={
+          <Avatar
+            src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
+          />
+        }
+        title={<a href={item.url}>{item.title}</a>}
+        description={
+          <Space>
+            <Tag>{item.category}</Tag>
+            <Typography.Text>{createdAt}</Typography.Text>
+          </Space>
+        }
+      />
+    </List.Item>
+  );
+};
 
 type ContainerProps = {
   feeds: Feed[];
@@ -42,7 +65,12 @@ const Container = ({ feeds, isLoading }: ContainerProps) => {
       renderEmpty={() => <Empty />}
     >
       <Layout.Content style={contentStyle}>
-        <Card title="Feeds">
+        <Card
+          title="Feeds"
+          extra={
+            <Search placeholder="input search text" style={{ width: 200 }} />
+          }
+        >
           <List
             itemLayout="horizontal"
             dataSource={feeds}

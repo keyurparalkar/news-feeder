@@ -31,7 +31,7 @@ export const aggregateApiResponse = (response: any, source: Source): Feed[] => {
       return response?.results.map((item: any) => ({
         createdAt: item.webPublicationDate,
         author: "",
-        category: item.section,
+        category: item.sectionName,
         title: item.webTitle,
         url: item.webUrl,
       }));
