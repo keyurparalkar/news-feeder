@@ -85,7 +85,7 @@ export const LeftSider = () => {
   };
 
   return (
-    <Sider style={leftSiderStyle}>
+    <Sider style={leftSiderStyle} breakpoint="sm">
       <Menu
         defaultSelectedKeys={[FeedsKey.GUARDIAN]}
         mode="inline"

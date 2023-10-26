@@ -6,8 +6,8 @@ import {
   Empty,
   Layout,
   List,
+  Row,
   Select,
-  Space,
   Tag,
   Typography,
 } from "antd";
@@ -56,20 +56,18 @@ const ListItemRenderer = ({
     <List.Item>
       <List.Item.Meta
         avatar={
-          <Avatar
-            src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
-          />
+          <Avatar shape="square" style={{backgroundColor: "#000060", fontSize: "1.1rem", fontWeight: 400}}>{index + 1}</Avatar>
         }
         title={<a href={item.url}>{item.title}</a>}
         description={
-          <Space>
+          <>
             <Tag>{item.category}</Tag>
             {(selectedSource === GlobalKeys.ALL ||
               (Object.values(FeedsByCategoryKeys) as string[]).includes(
                 selectedSource
             )) && <Tag>{item.source}</Tag>}
             <Text>{createdAt}</Text>
-          </Space>
+          </>
         }
       />
     </List.Item>
@@ -117,7 +115,7 @@ const Container = ({
         <Card
           title="Feeds"
           extra={
-            <>
+            <Row>
               <Search
                 placeholder="input search text"
                 style={{ width: 200 }}
@@ -137,7 +135,7 @@ const Container = ({
                     options={selectOptions}
                   />
                 )}
-            </>
+            </Row>
           }
         >
           <List
@@ -151,6 +149,10 @@ const Container = ({
               />
             )}
             loading={isLoading}
+            style={{
+              maxHeight: "72vh",
+              overflowY: "scroll"
+            }}
           />
         </Card>
       </Layout.Content>
