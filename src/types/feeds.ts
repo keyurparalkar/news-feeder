@@ -22,3 +22,10 @@ export enum FeedsKey {
 export enum GlobalKeys {
   ALL = "all",
 }
+
+export const selectOptions = Object.entries({ ...GlobalKeys, ...FeedsKey }).map(
+  ([key, value]) => ({
+    value,
+    label: key,
+  })
+);

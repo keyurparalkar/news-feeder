@@ -6,19 +6,20 @@ import {
   Empty,
   Layout,
   List,
+  Select,
   Space,
   Tag,
   Typography,
 } from "antd";
 import Search from "antd/es/input/Search";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { debounce } from "lodash";
 import { ChangeEvent, Dispatch } from "react";
 
 import { ActionProps } from "../../context";
 import { FILTER_DATA } from "../../context/actions";
-import { Feed, GlobalKeys, Source } from "../../types/feeds";
+import { Feed, GlobalKeys, selectOptions, Source } from "../../types/feeds";
 
 dayjs.extend(relativeTime);
 const { RangePicker } = DatePicker;
@@ -87,6 +88,10 @@ const Container = ({
     dispatch({ type: FILTER_DATA, payload: { dateStrings } });
   };
 
+  const handleSelectChange = (selectValue: string) => {
+    dispatch({ type: FILTER_DATA, payload: { selectValue } });
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -113,6 +118,13 @@ const Container = ({
                 format={dateFormat}
                 onCalendarChange={handleDateSelection}
               />
+              {selectedSource === GlobalKeys.ALL && (
+                <Select
+                  placeholder="Filter by News Source"
+                  onSelect={handleSelectChange}
+                  options={selectOptions}
+                />
+              )}
             </>
           }
         >

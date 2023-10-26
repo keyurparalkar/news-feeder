@@ -25,7 +25,7 @@ const feedReducer = (state: GlobalState, actions: ActionProps): GlobalState => {
     }
 
     case FILTER_DATA: {
-      const { searchTerm, dateStrings } = actions.payload;
+      const { searchTerm, dateStrings, selectValue } = actions.payload;
       let filteredData = undefined;
       if (searchTerm !== "") {
         filteredData = state.feedSources[state.selectedSource].filter((feed) =>
@@ -36,6 +36,12 @@ const feedReducer = (state: GlobalState, actions: ActionProps): GlobalState => {
       if (dateStrings) {
         filteredData = state.feedSources[state.selectedSource].filter((feed) =>
           dayjs(feed.createdAt).isBetween(dateStrings[0], dateStrings[1])
+        );
+      }
+
+      if (selectValue) {
+        filteredData = state.feedSources[state.selectedSource].filter(
+          (feed) => feed.source === selectValue
         );
       }
 
