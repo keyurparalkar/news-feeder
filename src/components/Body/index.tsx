@@ -4,7 +4,7 @@ import { fetchFeed } from "../../apis";
 import { aggregateApiResponse } from "../../apis/utils";
 import { FeedContext, FeedDispatchContext } from "../../context";
 import { FETCH_FEED } from "../../context/actions";
-import { FeedsKey, GlobalKeys, Source } from "../../types/feeds";
+import { Feed, FeedsKey, GlobalKeys, Source } from "../../types/feeds";
 import Container from "./Container";
 import LeftSideBar from "./LeftSideBar";
 
@@ -18,7 +18,7 @@ const Body = () => {
       setIsLoading(true);
       const responses = await fetchFeed(GlobalKeys.ALL);
 
-      // let aggregatedData: Feed[] = [];
+      let aggregatedData: Feed[] = [];
 
       Object.values(FeedsKey).forEach(async (feedSource, idx) => {
         const response = await responses[idx];
@@ -28,10 +28,10 @@ const Body = () => {
             data?.response ?? data,
             feedSource
           );
-          // aggregatedData = [...aggregatedData, ...transformedResp];
+          aggregatedData = [...aggregatedData, ...transformedResp];
           dispatch({
             type: FETCH_FEED,
-            payload: { transformedResp, feedSource },
+            payload: aggregatedData,
           });
         }
       });
@@ -75,9 +75,8 @@ const Body = () => {
   let dataFeedSource = feedSources[selectedSource];
   if (filteredData && filteredData.length > 0) {
     dataFeedSource = filteredData;
-  } else if (selectedSource === GlobalKeys.ALL) {
-    dataFeedSource = Object.values(feedSources).flat();
   }
+
   return (
     <Layout>
       <LeftSideBar />
