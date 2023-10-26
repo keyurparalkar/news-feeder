@@ -1,5 +1,5 @@
 import { ActionProps, GlobalState } from ".";
-import { FETCH_FEED, SELECT_SOURCE } from "./actions";
+import { FETCH_FEED, FILTER_DATA, SELECT_SOURCE } from "./actions";
 
 const feedReducer = (state: GlobalState, actions: ActionProps): GlobalState => {
   switch (actions.type) {
@@ -16,6 +16,17 @@ const feedReducer = (state: GlobalState, actions: ActionProps): GlobalState => {
       return {
         ...state,
         selectedSource: actions.payload,
+      };
+    }
+
+    case FILTER_DATA: {
+      const searchTerm = actions.payload;
+      const filteredData = state.feedSources[state.selectedSource].filter(
+        (feed) => JSON.stringify(feed).includes(searchTerm)
+      );
+      return {
+        ...state,
+        filteredData,
       };
     }
     default:

@@ -12,6 +12,11 @@ import {
 import Search from "antd/es/input/Search";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { debounce } from "lodash";
+import { ChangeEvent, Dispatch } from "react";
+
+import { ActionProps } from "../../context";
+import { FILTER_DATA } from "../../context/actions";
 import { Feed } from "../../types/feeds";
 
 dayjs.extend(relativeTime);
@@ -49,9 +54,14 @@ const ListItemRenderer = (item: Feed, index: number) => {
 type ContainerProps = {
   feeds: Feed[];
   isLoading: boolean;
+  dispatch: Dispatch<ActionProps>;
 };
 
-const Container = ({ feeds, isLoading }: ContainerProps) => {
+const Container = ({ feeds, isLoading, dispatch }: ContainerProps) => {
+  const handleSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: FILTER_DATA, payload: e.target.value });
+  }, 700);
+
   return (
     <ConfigProvider
       theme={{
@@ -68,7 +78,11 @@ const Container = ({ feeds, isLoading }: ContainerProps) => {
         <Card
           title="Feeds"
           extra={
-            <Search placeholder="input search text" style={{ width: 200 }} />
+            <Search
+              placeholder="input search text"
+              style={{ width: 200 }}
+              onChange={handleSearch}
+            />
           }
         >
           <List

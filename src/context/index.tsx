@@ -1,10 +1,11 @@
 import { createContext, Dispatch, useReducer } from "react";
-import { Feeds, FeedsKey, Source } from "../types/feeds";
+import { Feed, Feeds, FeedsKey, Source } from "../types/feeds";
 import feedReducer from "./reducer";
 
 export type GlobalState = {
   feedSources: Feeds;
   selectedSource: Source;
+  filteredData?: Feed[];
 };
 
 export const initialState: GlobalState = {

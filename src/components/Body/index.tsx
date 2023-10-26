@@ -8,7 +8,7 @@ import Container from "./Container";
 import LeftSideBar from "./LeftSideBar";
 
 const Body = () => {
-  const { selectedSource, feedSources } = useContext(FeedContext);
+  const { selectedSource, feedSources, filteredData } = useContext(FeedContext);
   const dispatch = useContext(FeedDispatchContext);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +40,11 @@ const Body = () => {
   return (
     <Layout>
       <LeftSideBar />
-      <Container feeds={feedSources[selectedSource]} isLoading={isLoading} />
+      <Container
+        feeds={filteredData ?? feedSources[selectedSource]}
+        isLoading={isLoading}
+        dispatch={dispatch}
+      />
     </Layout>
   );
 };
