@@ -11,7 +11,7 @@ import {
   Typography,
 } from "antd";
 import Search from "antd/es/input/Search";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { debounce } from "lodash";
 import { ChangeEvent, Dispatch } from "react";
@@ -80,8 +80,12 @@ const Container = ({
   selectedSource,
 }: ContainerProps) => {
   const handleSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: FILTER_DATA, payload: e.target.value });
+    dispatch({ type: FILTER_DATA, payload: { searchTerm: e.target.value } });
   }, 700);
+
+  const handleDateSelection = (_: unknown, dateStrings: [string, string]) => {
+    dispatch({ type: FILTER_DATA, payload: { dateStrings } });
+  };
 
   return (
     <ConfigProvider
@@ -106,11 +110,8 @@ const Container = ({
                 onChange={handleSearch}
               />
               <RangePicker
-                defaultValue={[
-                  dayjs("2015/01/01", dateFormat),
-                  dayjs("2015/01/01", dateFormat),
-                ]}
                 format={dateFormat}
+                onCalendarChange={handleDateSelection}
               />
             </>
           }
